@@ -119,6 +119,10 @@ object PolymorphicFunctions {
     
     println("\nexercise 3")
     println(franceCity(94800))
+
+    println("\nexercise 6")
+    println(tripleSize("foo"))
+    println(quadrupleSize("foo"))
   }
   
   // Here's a polymorphic version of `binarySearch`, parameterized on 
@@ -194,8 +198,9 @@ object PolymorphicFunctions {
   */
 
   // Exercise 6: Implement `compose`
-/*
-  def compose[A,B,C](f: B => C, g: A => B): A => C =
-    ??? 
-*/    
+  //def compose[A,B,C](f: B => C, g: A => B): A => C  = f(g(_))
+
+  //def doubleSize = compose((i: Int) => i * 2, (s: String) => s.length)
+  def tripleSize = ((i: Int) => i * 3) compose ((s: String) => s.length)
+  def quadrupleSize = ((s: String) => s.length) andThen ((i: Int) => i * 4)
 }
