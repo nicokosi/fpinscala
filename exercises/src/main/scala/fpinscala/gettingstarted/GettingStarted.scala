@@ -108,6 +108,18 @@ object MonomorphicBinarySearch {
 }
 
 object PolymorphicFunctions {
+
+  def main(args: Array[String]): Unit = {
+    println("\nexercise 2")
+    val greaterThan = new Function2[Int, Int, Boolean] {
+      def apply(a: Int, b: Int) = a > b
+    }
+    println(isSorted(Array(1, 2, 3), greaterThan))
+    println(isSorted(Array(1, 3, 2), greaterThan))
+    
+    println("\nexercise 3")
+    println(franceCity(94800))
+  }
   
   // Here's a polymorphic version of `binarySearch`, parameterized on 
   // a function for testing whether an `A` is greater than another `A`. 
@@ -138,18 +150,11 @@ object PolymorphicFunctions {
     } 
     go(0)
   }
-
-  val greaterThan = new Function2[Int, Int, Boolean] {
-    def apply(a: Int, b: Int) = a > b
-  }
-  isSorted(Array(1, 2, 3), greaterThan)
-  isSorted(Array(1, 3, 2), greaterThan)
   
   // Polymorphic functions are often so constrained by their type
   // that they only have one implementation! Here's an example:
 
   // Exercise 3: Implement `partial1`.
-/*  
   def partial1[A,B,C](a: A, f: (A,B) => C): B => C = 
       f(a, _)
 
@@ -158,8 +163,8 @@ object PolymorphicFunctions {
     "US" -> Map(1 -> "Boston"))
   def city(countryCode: String, zipCode: Int): Option[String] =
     cities(countryCode).get(zipCode)
-  def franceCity = partial1("FR", city) franceCity(94800)
-*/  
+  def franceCity = partial1("FR", city)
+  franceCity(94800)
   
   // Exercise 4: Implement `curry`.
 
