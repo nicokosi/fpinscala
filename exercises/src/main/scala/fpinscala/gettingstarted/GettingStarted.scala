@@ -121,6 +121,7 @@ object PolymorphicFunctions {
     println(franceCity(94800))
 
     println("\nexercise 6")
+    println(doubleSize("foo"))
     println(tripleSize("foo"))
     println(quadrupleSize("foo"))
   }
@@ -198,9 +199,10 @@ object PolymorphicFunctions {
   */
 
   // Exercise 6: Implement `compose`
-  //def compose[A,B,C](f: B => C, g: A => B): A => C  = f(g(_))
+  def compose[A,B,C](f: B => C, g: A => B): A => C  
+    = (a: A) => f(g(a))
 
-  //def doubleSize = compose((i: Int) => i * 2, (s: String) => s.length)
+  def doubleSize = compose((i: Int) => i * 2, (s: String) => s.length)
   def tripleSize = ((i: Int) => i * 3) compose ((s: String) => s.length)
   def quadrupleSize = ((s: String) => s.length) andThen ((i: Int) => i * 4)
 }
