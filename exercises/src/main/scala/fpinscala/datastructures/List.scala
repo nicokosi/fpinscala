@@ -51,11 +51,20 @@ object List { // `List` companion object
     foldRight(l, 1.0)(_ * _)
 
 
-  def tail[A](l: List[A]): List[A] = sys.error("todo")
+  def tail[A](l: List[A]): List[A] = l match {
+    case Nil => Nil
+    case Cons(_, t) => t
+  }
 
-  def drop[A](l: List[A], n: Int): List[A] = sys.error("todo")
+  def drop[A](l: List[A], n: Int): List[A] = n match {
+    case 0 => l
+    case _ => drop(tail(l), n-1)
+  }
 
-  def dropWhile[A](l: List[A])(f: A => Boolean): List[A] = sys.error("todo")
+  def dropWhile[A](l: List[A])(f: A => Boolean): List[A] = l match {
+    case Nil => l
+    case Cons(h, t) => if (f(h)) dropWhile(t)(f) else l
+  }
 
   def setHead[A](l: List[A])(h: A): List[A] = sys.error("todo")
 
