@@ -66,7 +66,10 @@ object List { // `List` companion object
     case Cons(h, t) => if (f(h)) dropWhile(t)(f) else l
   }
 
-  def setHead[A](l: List[A])(h: A): List[A] = sys.error("todo")
+  def setHead[A](l: List[A])(h: A): List[A] = l match {
+    case Nil => l
+    case Cons(_, t) => Cons(h, t)
+  }
 
   def init[A](l: List[A]): List[A] = sys.error("todo")
 
@@ -75,4 +78,14 @@ object List { // `List` companion object
   def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = sys.error("todo")
 
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
+
+}
+object Main {
+  import List._
+  def main(args: Array[String]): Unit = {
+    println("tail: " + tail(List(41,42)))
+    println("drop: " + drop(List(40,41,42), 2))
+    println("dropWhile: " + dropWhile(List(40, 41, 42)) (_ < 42))
+    println("setHead: " + setHead(List(1,2,3)) (42))
+  }
 }
