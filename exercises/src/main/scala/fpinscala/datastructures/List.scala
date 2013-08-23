@@ -73,7 +73,9 @@ object List { // `List` companion object
 
   def init[A](l: List[A]): List[A] = sys.error("todo")
 
-  def length[A](l: List[A]): Int = sys.error("todo")
+  def length[A](l: List[A]): Int =
+    foldRight(l, 0) ((a: A, n: Int) => n + 1)
+  
 
   def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = sys.error("todo")
 
@@ -87,5 +89,6 @@ object Main {
     println("drop: " + drop(List(40,41,42), 2))
     println("dropWhile: " + dropWhile(List(40, 41, 42)) (_ < 42))
     println("setHead: " + setHead(List(1,2,3)) (42))
+    println("length: " + length(List(1,2,3)))
   }
 }
