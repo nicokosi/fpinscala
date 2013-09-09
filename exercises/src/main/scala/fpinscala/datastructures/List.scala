@@ -77,7 +77,19 @@ object List { // `List` companion object
     foldRight(l, 0) ((a: A, n: Int) => n + 1)
   
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = sys.error("todo")
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B  = sys.error("todo")
+/*  {
+    @annotation.tailrec
+    def go(acc: B, i: Int) {
+      if (i <= 0) {
+        acc
+      } else {
+        go(f(acc, l(i)), i-1)
+      }
+    }
+    go(z, length(l)-1)
+  }
+*/
 
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
 
@@ -90,5 +102,9 @@ object Main {
     println("dropWhile: " + dropWhile(List(40, 41, 42)) (_ < 42))
     println("setHead: " + setHead(List(1,2,3)) (42))
     println("length: " + length(List(1,2,3)))
+    println("foldLeft: " + foldLeft(List(1,2,3), 0) (_-_))
+    println("sum: " + foldLeft(List(1,39), 2) (_+_))
+    println("product: " + foldLeft(List(2,21), 1) (_*_))
+    println("lenght: " + foldLeft(List(2,21), 1) (_*_))
   }
 }
