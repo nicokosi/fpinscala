@@ -76,20 +76,20 @@ object List { // `List` companion object
   def length[A](l: List[A]): Int =
     foldRight(l, 0) ((a: A, n: Int) => n + 1)
   
-
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B  = sys.error("todo")
-/*  {
-    @annotation.tailrec
-    def go(acc: B, i: Int) {
-      if (i <= 0) {
-        acc
-      } else {
-        go(f(acc, l(i)), i-1)
-      }
-    }
-    go(z, length(l)-1)
+  //@annotation.tailrec
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
+      case Nil => z
+      case Cons(x, xs) => f(foldLeft(xs, z)(f), x)
   }
-*/
+
+  def sum_via_foldLeft(l: List[Int]) = 
+    foldLeft(l, 0.0)(_ + _)
+  
+  def product_via_foldLeft(l: List[Double]) = 
+    foldLeft(l, 1.0)(_ * _)
+
+  def length_via_foldLeft[A] (l: List[A]) = 
+    foldLeft(l, 0) ((n: Int, a: A) => n + 1)
 
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
 
@@ -103,8 +103,8 @@ object Main {
     println("setHead: " + setHead(List(1,2,3)) (42))
     println("length: " + length(List(1,2,3)))
     println("foldLeft: " + foldLeft(List(1,2,3), 0) (_-_))
-    println("sum: " + foldLeft(List(1,39), 2) (_+_))
-    println("product: " + foldLeft(List(2,21), 1) (_*_))
-    println("lenght: " + foldLeft(List(2,21), 1) (_*_))
+    println("sum_via_foldLeft: " + sum_via_foldLeft(List(1,39)))
+    println("product_via_foldLeft: " + product_via_foldLeft(List(2,21)))
+    println("length_via_foldLeft: " + length_via_foldLeft(List(2,21)))
   }
 }
