@@ -91,6 +91,12 @@ object List { // `List` companion object
   def length_via_foldLeft[A] (l: List[A]) = 
     foldLeft(l, 0) ((n: Int, a: A) => n + 1)
 
+  def reverse[A](l: List[A]): List[A] = sys.error("todo")
+    //foldLeft(l, Nil) (Cons(_,_))
+
+  def append[A](l: List[A], a: A): List[A] = sys.error("todo")
+    //foldRight(l, a) (Cons(_,_))
+
   def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
 
 }
@@ -106,5 +112,7 @@ object Main {
     println("sum_via_foldLeft: " + sum_via_foldLeft(List(1,39)))
     println("product_via_foldLeft: " + product_via_foldLeft(List(2,21)))
     println("length_via_foldLeft: " + length_via_foldLeft(List(2,21)))
+    //println("reverse: " + reverse(List(1,2,3)))
+    //println("append: " + append(List(1,2), 3))
   }
 }
