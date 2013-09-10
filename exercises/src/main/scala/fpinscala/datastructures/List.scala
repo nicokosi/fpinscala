@@ -76,10 +76,10 @@ object List { // `List` companion object
   def length[A](l: List[A]): Int =
     foldRight(l, 0) ((a: A, n: Int) => n + 1)
   
-  //@annotation.tailrec
+  @annotation.tailrec
   def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
       case Nil => z
-      case Cons(x, xs) => f(foldLeft(xs, z)(f), x)
+      case Cons(h, t) => foldLeft(t, f(z, h)) (f)
   }
 
   def sum_via_foldLeft(l: List[Int]) = 
