@@ -97,7 +97,14 @@ object List { // `List` companion object
   def append[A](l: List[A], a: A): List[A] =
     foldRight(l, List(a)) ((x: A, y: List[A]) => Cons(x,y))
 
-  def map[A,B](l: List[A])(f: A => B): List[B] = sys.error("todo")
+  def addOne(l: List[Int]): List[Int] =
+    foldRight(l, Nil:List[Int]) ((x: Int, y: List[Int]) => Cons(x+1, y))
+
+  def toStrings(l: List[Double]): List[String] =
+    foldRight(l, Nil:List[String]) ((x: Double, y: List[String]) => Cons(x.toString(), y))
+
+  def map[A,B](l: List[A])(f: A => B): List[B] =
+    foldRight(l, Nil:List[B]) ((x: A, y: List[B]) => Cons(f(x), y))  
 
 }
 object Main {
@@ -114,5 +121,8 @@ object Main {
     println("length_via_foldLeft: " + length_via_foldLeft(List(2,21)))
     println("reverse: " + reverse(List(1,2,3)))
     println("append: " + append(List(1,2), 3))
+    println("addOne: " + addOne(List(1,2,3)))
+    println("toStrings: " + toStrings(List(1,2,3)))
+    println("map: " + map(List(1,2,3)) ((_ * 2.0)))
   }
 }
