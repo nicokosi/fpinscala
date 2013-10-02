@@ -104,7 +104,14 @@ object List { // `List` companion object
     foldRight(l, Nil:List[String]) ((x: Double, y: List[String]) => Cons(x.toString(), y))
 
   def map[A,B](l: List[A])(f: A => B): List[B] =
-    foldRight(l, Nil:List[B]) ((x: A, y: List[B]) => Cons(f(x), y))  
+    foldRight(l, Nil:List[B]) ((x: A, y: List[B]) => Cons(f(x), y))
+
+  def filter[A](l: List[A])(f: A => Boolean): List[A] =
+    foldRight(l, Nil:List[A]) ((x: A, y: List[A]) => if (f(x)) y else Cons(x, y))
+
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B]
+    = sys.error("todo")
+
 
 }
 object Main {
@@ -124,5 +131,7 @@ object Main {
     println("addOne: " + addOne(List(1,2,3)))
     println("toStrings: " + toStrings(List(1,2,3)))
     println("map: " + map(List(1,2,3)) ((_ * 2.0)))
+    println("filter: " + filter(List(1,2,3,4,5)) (_ % 2 != 0))
+    println("flatMap: " + flatMap(List(1,2,3))(i => List(i,i)))
   }
 }
