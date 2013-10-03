@@ -116,6 +116,10 @@ object List { // `List` companion object
   def filter_via_flatMap[A](l: List[A])(f: A => Boolean): List[A] =
     flatMap(l) ((x: A) => if (f(x)) Nil:List[A] else List(x))
 
+  def add(l1: List[Int], l2: List[Int]) = sys.error("todo")
+    //flatMap(l1) ((x: Int) => List(x + y)))
+
+
 }
 object Main {
   import List._
@@ -138,5 +142,6 @@ object Main {
     println("filter: " + filter(List(1,2,3,4,5)) (_ % 2 != 0))
     println("flatMap: " + flatMap(List(1,2,3))(i => List(i,i)))
     println("filter_via_flatMap: " + filter_via_flatMap(List(1,2,3,4,5)) (_ % 2 != 0))
+    println("add: " + add(List(1,2,3), List(4,5,6)))
   }
 }
