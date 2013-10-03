@@ -113,6 +113,9 @@ object List { // `List` companion object
   def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] =
     foldRight(l, Nil:List[B]) ((x: A, y: List[B]) => append(f(x), y))
 
+  def filter_via_flatMap[A](l: List[A])(f: A => Boolean): List[A] =
+    flatMap(l) ((x: A) => if (f(x)) Nil:List[A] else List(x))
+
 }
 object Main {
   import List._
@@ -134,5 +137,6 @@ object Main {
     println("map: " + map(List(1,2,3)) ((_ * 2.0)))
     println("filter: " + filter(List(1,2,3,4,5)) (_ % 2 != 0))
     println("flatMap: " + flatMap(List(1,2,3))(i => List(i,i)))
+    println("filter_via_flatMap: " + filter_via_flatMap(List(1,2,3,4,5)) (_ % 2 != 0))
   }
 }
