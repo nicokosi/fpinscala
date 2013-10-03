@@ -92,10 +92,11 @@ object List { // `List` companion object
     foldLeft(l, 0) ((n: Int, a: A) => n + 1)
 
   def reverse[A](l: List[A]): List[A] =
-    foldLeft(l, Nil:List[A]) ((b: List[A], a: A) => Cons(a,b))
+    foldLeft(l, Nil:List[A]) ((a,b) => Cons(b,a))
 
   def append[A](l: List[A], a: A): List[A] =
-    foldRight(l, List(a)) ((x: A, y: List[A]) => Cons(x,y))
+    foldLeft(l, Nil:List[A]) ((b: List[A], a: A) => Cons(a,b))
+    // or //foldRight(l, List(a)) ((x: A, y: List[A]) => Cons(x,y))
 
   def addOne(l: List[Int]): List[Int] =
     foldRight(l, Nil:List[Int]) ((x: Int, y: List[Int]) => Cons(x+1, y))
@@ -122,6 +123,7 @@ object Main {
     println("dropWhile: " + dropWhile(List(40, 41, 42)) (_ < 42))
     println("setHead: " + setHead(List(1,2,3)) (42))
     println("length: " + length(List(1,2,3)))
+    println("foldRight: " + foldRight(List(1,2,3), 0) (_-_))
     println("foldLeft: " + foldLeft(List(1,2,3), 0) (_-_))
     println("sum_via_foldLeft: " + sum_via_foldLeft(List(1,39)))
     println("product_via_foldLeft: " + product_via_foldLeft(List(2,21)))
