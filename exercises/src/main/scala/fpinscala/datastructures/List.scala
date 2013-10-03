@@ -110,9 +110,8 @@ object List { // `List` companion object
   def filter[A](l: List[A])(f: A => Boolean): List[A] =
     foldRight(l, Nil:List[A]) ((x: A, y: List[A]) => if (f(x)) y else Cons(x, y))
 
-  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B]
-    = sys.error("todo")
-
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] =
+    foldRight(l, Nil:List[B]) ((x: A, y: List[B]) => append(f(x), y))
 
 }
 object Main {
