@@ -32,6 +32,13 @@ object Tree {
     case Branch(l,r) => Branch(map(l)(f), map(r)(f))
  }
 
+ // EXERCISE 29: Generalize size, maximum, depth, and map, writing a new
+ // function fold that abstracts over their similarities.
+def fold[A,B](t: Tree[A], z: B)(f: A => B)(g: (B, B) => B): B = t match {
+    case Leaf(v) => z
+    case Branch(l,r) => g(fold(l, z)(f)(g), fold(r, z)(f)(g))
+ }
+
 }
 
 object TreeMain {
@@ -42,7 +49,7 @@ object TreeMain {
   	println("size: " + size(t))
   	println("maximum: " + maximum(t))
   	println("depth: " + depth(t))
-    println("map: " + map(t) (_ + 1))
+    println("size via fold: " + fold(t, 0) ((Int) => 1) (_ + _))
   }
 
 }
