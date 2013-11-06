@@ -92,7 +92,12 @@ object Option {
     mkMatcher(pat) flatMap (f => 
     mkMatcher(pat2) map     (g => 
     f(s) && g(s)))
-  def variance(xs: Seq[Double]): Option[Double] = sys.error("todo")
+
+  def variance(xs: Seq[Double]): Option[Double] = {
+    val m = mean(xs)
+    val p = m.map((x: Double) => math.pow(x - m.getOrElse(0.0), 2))
+    Some(mean(p).getOrElse(0.0) / m)
+  }
 
   def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = sys.error("todo")
 
@@ -101,4 +106,14 @@ object Option {
   def sequence[A](a: List[Option[A]]): Option[List[A]] = sys.error("todo")
 
   def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = sys.error("todo")
+}
+
+object OptionMain {
+
+  import scala.collection.immutable.List
+  import fpinscala.errorhandling.Option._
+  def main(args: Array[String]): Unit = {
+    println("variance: " + variance(List(1,2,3)))
+  }
+
 }
