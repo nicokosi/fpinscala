@@ -9,7 +9,7 @@ object Tree {
 
  // EXERCISE 25: Write a function size that counts the number of nodes (leaves and branches) in a tree.
  def size[A](t: Tree[A]) : Int = t match {
-    case Leaf(v) => 1
+    case Leaf(_) => 1
     case Branch(l,r) => 1 + size(l) + size(r)
  } 
 
@@ -21,7 +21,7 @@ object Tree {
 
  // EXERCISE 27: Write a function depth that returns the maximum path length from the root of a tree to any leaf.
  def depth[A](t: Tree[A]) : Int = t match {
-    case Leaf(v) => 0 
+    case Leaf(_) => 0 
     case Branch(l,r) => 1 + (depth(l) max depth(r))
  }
 
@@ -34,13 +34,24 @@ object Tree {
 
  // EXERCISE 29: Generalize size, maximum, depth, and map, writing a new
  // function fold that abstracts over their similarities.
-def fold[A,B](t: Tree[A], z: B)(f:() => B)(g: (B, B) => B): B = t match {
-    case Leaf(v) => f()
-    case Branch(l,r) => g(f(), g(fold(l, z)(f)(g), fold(r, z)(f)(g)))
+def fold[A,B](t: Tree[A])(f: A => B)(g: (B, B) => B): B = t match {
+    case Leaf(v) => f(v)
+    case Branch(l,r) => g(fold(l)(f)(g), fold(r)(f)(g))
  }
 
-}
+ def sizeViaFold[A](t: Tree[A]): Int =
+  fold(t)(a => 1) (1 + _ + _)
 
+ def maximumViaFold(t: Tree[Int]): Int =
+  fold(t)(a => a) (_ max _)
+
+ def depthViaFold[A](t: Tree[A]): Int =
+  fold(t)(a => 0) ((a: Int, b: Int) => 1 + (a max b))
+
+ def mapViaFold[A,B](t: Tree[A])(f: A => B): Tree[B] =
+  fold(t) (a => Leaf(f(a)): Tree[B]) (Branch(_,_))
+
+}
 object TreeMain {
 
   import Tree._
@@ -49,8 +60,11 @@ object TreeMain {
   	println("size: " + size(t))
   	println("maximum: " + maximum(t))
   	println("depth: " + depth(t))
-    println("size via fold: " + fold(t, 0) (() => 1) (_ + _))
-    //println("maximum via fold: " + fold(t, 0) ((Int: i) => i) (_ max _))
+    println("map: " + map(t)(_ + 1))
+    println("size via fold: " + sizeViaFold(t))
+    println("maximum via fold: " + maximumViaFold(t))
+    println("depth via fold: " + depthViaFold(t))
+    println("map via fold: " + mapViaFold(t)(_ + 1))
   }
 
 }
