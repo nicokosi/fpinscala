@@ -94,9 +94,7 @@ object Option {
     f(s) && g(s)))
 
   def variance(xs: Seq[Double]): Option[Double] = {
-    val m = mean(xs)
-    val p = m.map((x: Double) => math.pow(x - m.getOrElse(0.0), 2))
-    Some(mean(p).getOrElse(0.0) / m)
+    mean(xs) flatMap (m => mean(xs.map(x => math.pow(x - m, 2))))
   }
 
   def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = sys.error("todo")
@@ -114,6 +112,7 @@ object OptionMain {
   import fpinscala.errorhandling.Option._
   def main(args: Array[String]): Unit = {
     println("variance: " + variance(List(1,2,3)))
+    println("variance: " + variance(List()))
   }
 
 }
