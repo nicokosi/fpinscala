@@ -93,11 +93,11 @@ object Option {
     mkMatcher(pat2) map     (g => 
     f(s) && g(s)))
 
-  def variance(xs: Seq[Double]): Option[Double] = {
+  def variance(xs: Seq[Double]): Option[Double] =
     mean(xs) flatMap (m => mean(xs.map(x => math.pow(x - m, 2))))
-  }
 
-  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = sys.error("todo")
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] =
+   a flatMap (x => (b flatMap (y => Some(f(x, y)))))   
 
   def bothMatch_2(pat1: String, pat2: String, s: String): Option[Boolean] = sys.error("todo")
 
@@ -113,6 +113,11 @@ object OptionMain {
   def main(args: Array[String]): Unit = {
     println("variance: " + variance(List(1,2,3)))
     println("variance: " + variance(List()))
+    println()
+          
+    def division (a: Int, b: Int) : Double = a / b
+    println("map2 (lift to option): " + map2(Some(42), Some(2))(division))
+    println("map2 (lift to option): " + map2(Some(42), None)(division))
   }
 
 }
