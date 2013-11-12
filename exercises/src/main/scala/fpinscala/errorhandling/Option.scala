@@ -101,8 +101,11 @@ object Option {
 
   def bothMatch_2(pat1: String, pat2: String, s: String): Option[Boolean] = sys.error("todo")
 
-  def sequence[A](a: List[Option[A]]): Option[List[A]] = sys.error("todo")
-
+  def sequence[A](a: List[Option[A]]): Option[List[A]] = a match {
+    case Nil => Some(Nil)
+    case h :: t => h flatMap (hh => sequence(t) map (hh :: _))
+  }
+    
   def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = sys.error("todo")
 }
 
@@ -114,10 +117,15 @@ object OptionMain {
     println("variance: " + variance(List(1,2,3)))
     println("variance: " + variance(List()))
     println()
-          
+
     def division (a: Int, b: Int) : Double = a / b
     println("map2 (lift to option): " + map2(Some(42), Some(2))(division))
     println("map2 (lift to option): " + map2(Some(42), None)(division))
+    println()
+
+    println("sequence 42, 43: " + sequence(List(Some(42), Some(43))))
+    println("sequence 42, None: " + sequence(List(Some(42), None)))
+
   }
 
 }
