@@ -106,13 +106,18 @@ object Option {
     case h :: t => h flatMap (hh => sequence(t) map (hh :: _))
   }
     
-  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = sys.error("todo")
+  def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = a match {
+    case Nil => Some(Nil)
+    case h :: t => f(h) flatMap (hh => traverse(t)(f) map (hh :: _))
+  }
+
 }
 
 object OptionMain {
 
   import scala.collection.immutable.List
   import fpinscala.errorhandling.Option._
+  import scala.util.Try
   def main(args: Array[String]): Unit = {
     println("variance: " + variance(List(1,2,3)))
     println("variance: " + variance(List()))
@@ -125,6 +130,10 @@ object OptionMain {
 
     println("sequence 42, 43: " + sequence(List(Some(42), Some(43))))
     println("sequence 42, None: " + sequence(List(Some(42), None)))
+
+    println()
+    println("traverse 42, 43: " + traverse[String, Int]
+        (List("42", "43"))(i => Some(i.toInt)))
 
   }
 
