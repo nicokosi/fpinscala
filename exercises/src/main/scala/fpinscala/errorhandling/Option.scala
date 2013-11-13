@@ -117,7 +117,6 @@ object OptionMain {
 
   import scala.collection.immutable.List
   import fpinscala.errorhandling.Option._
-  import scala.util.Try
   def main(args: Array[String]): Unit = {
     println("variance: " + variance(List(1,2,3)))
     println("variance: " + variance(List()))

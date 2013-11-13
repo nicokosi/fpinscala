@@ -1,7 +1,10 @@
 package fpinscala.errorhandling
 
 sealed trait Either[+E,+A] {
- def map[B](f: A => B): Either[E, B] = sys.error("todo")
+ def map[B](f: A => B): Either[E, B] = this match {
+  case Left(e) => Left(e)
+  case Right(a) => Right(f(a))
+ }
 
  def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] = sys.error("todo")
 
@@ -25,5 +28,16 @@ object Either {
     } catch {
       case e: Exception => Left(e)
     }
+
+}
+
+object EitherMain {
+
+  import fpinscala.errorhandling.Either._
+  def main(args: Array[String]): Unit = {
+    println("map: " + (safeDiv(82, 2) map (_ + 1)))
+    println("map: " + (safeDiv(42, 0) map (_ + 1)))
+    println()
+  }
 
 }
