@@ -6,7 +6,10 @@ sealed trait Either[+E,+A] {
   case Right(a) => Right(f(a))
  }
 
- def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] = sys.error("todo")
+ def flatMap[EE >: E, B](f: A => Either[EE, B]): Either[EE, B] = this match {
+  case Left(e) => Left(e)
+  case Right(a) => f(a)
+ }
 
  def orElse[EE >: E, B >: A](b: => Either[EE, B]): Either[EE, B] = sys.error("todo")
 
@@ -35,8 +38,14 @@ object EitherMain {
 
   import fpinscala.errorhandling.Either._
   def main(args: Array[String]): Unit = {
-    println("map: " + (safeDiv(82, 2) map (_ + 1)))
-    println("map: " + (safeDiv(42, 0) map (_ + 1)))
+    println("map(82/2 + 1): " + (safeDiv(82, 2) map (_ + 1)))
+    println("map(42/0 + 1): " + (safeDiv(42, 0) map (_ + 1)))
+    println()
+
+    def only42(d:Double): Either[String, Double] = 
+      if (d == 42) Right(42) else Left("Not 42")
+    println("flatMap: " + (safeDiv(84, 2) flatMap only42))
+    println("flatMap: " + (safeDiv(2, 1) flatMap only42))
     println()
   }
 
