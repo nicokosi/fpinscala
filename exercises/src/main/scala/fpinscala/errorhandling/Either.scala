@@ -16,7 +16,9 @@ sealed trait Either[+E,+A] {
   case Right(_) => this
  }
 
- def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] = sys.error("todo")
+ def map2[EE >: E, B, C](b: Either[EE, B])(f: (A, B) => C): Either[EE, C] =
+  this flatMap (x => (b flatMap (y => Right(f(x, y)))))
+
 }
 case class Left[+E](get: E) extends Either[E,Nothing]
 case class Right[+A](get: A) extends Either[Nothing,A]
@@ -56,6 +58,14 @@ object EitherMain {
 
     println("orElse mean(emptyList) or 42: " + (noMean orElse Right(42)))
     println("orElse mean(emptyList) or custom error: " + (noMean orElse Left("Custom error")))
+    println()
+
+    val divisionOK = safeDiv(4, 2)
+    val divisionKO = safeDiv(4, 0)
+    def add(a: Double, b: Int) : Double = a + b
+    println("safe div: 4/2 + 1: " + (divisionOK.map2(Right(1))(add)))
+    println("safe div 4/2 + missing: " + (divisionOK.map2(Left("missing add operand"))(add)))
+    println("safe div 4/0 + 1: " + (divisionKO.map2(Right(1))(add)))
     println()
   }
 
