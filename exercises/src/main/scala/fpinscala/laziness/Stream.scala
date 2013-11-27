@@ -18,6 +18,10 @@ trait Stream[+A] {
   def takeWhile(p: A => Boolean): Stream[A] = sys.error("todo")
 
   def forAll(p: A => Boolean): Boolean = sys.error("todo")
+
+  def toList: List[A] =
+    foldRight(List[A]())((a, b) => a::b)
+
 }
 object Stream {
   def empty[A]: Stream[A] = 
@@ -33,9 +37,20 @@ object Stream {
     else cons(as.head, apply(as.tail: _*))
 
   val ones: Stream[Int] = cons(1, ones)
+
   def from(n: Int): Stream[Int] = sys.error("todo")
 
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = sys.error("todo")
 
   def startsWith[A](s: Stream[A], s2: Stream[A]): Boolean = sys.error("todo")
+
+}
+object StreamMain {
+
+  def main(args: Array[String]): Unit = {
+    println("toList (empty stream): " + (empty.toList))
+    println("toList (3-int stream): " + (Stream(1,2,3).toList))
+    println()
+  }
+
 }
