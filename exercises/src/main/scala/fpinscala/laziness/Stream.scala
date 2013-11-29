@@ -18,12 +18,16 @@ trait Stream[+A] {
     foldRight(List[A]())((a, b) => a::b)
 
   def take(n: Int): Stream[A] = uncons match {
-    case Some((h, t)) => if (n > 1) cons(h,  t.take(n-1)) 
-                          else cons(h, empty)
+    case Some((h, t)) => if (n > 0) cons(h,  t.take(n-1)) 
+                         else empty
     case _ => empty
   }
 
-  def takeWhile(p: A => Boolean): Stream[A] = sys.error("todo")
+  def takeWhile(p: A => Boolean): Stream[A] = uncons match {
+    case Some((h, t)) => if (p(h)) cons(h,  t.takeWhile(p)) 
+                         else empty
+    case _ => empty
+  }
 
   def forAll(p: A => Boolean): Boolean = sys.error("todo")
 
@@ -53,12 +57,16 @@ object Stream {
 object StreamMain {
 
   def main(args: Array[String]): Unit = {
-    println("toList (empty stream): " + (empty.toList))
-    println("toList (3-int stream): " + (Stream(1,2,3).toList))
+    def stream123 = Stream(1,2,3)
+    println("toList (empty stream): " + empty.toList)
+    println("toList (3-int stream): " + stream123.toList)
     println()
 
-    println("take 2nd (empty stream): " + (empty.take(2)).toList)
-    println("take 2nd (1-2-3 stream): " + (Stream(1,2,3).take(2).toList))
+    println("take 2nd (empty stream): " + empty.take(2).toList)
+    println("take 2nd (1-2-3 stream): " + stream123.take(2).toList)
+    println()
+
+    println("take while < 3 (1-2-3 stream): " + stream123.takeWhile(_ < 3).toList)
     println()
   }
 
