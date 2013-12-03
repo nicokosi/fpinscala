@@ -29,7 +29,9 @@ trait Stream[+A] {
     case _ => empty
   }
 
-  def forAll(p: A => Boolean): Boolean = sys.error("todo")
+  def forAll(p: A => Boolean): Boolean = {
+    foldRight(true)((a, b) => p(a) && b)
+  }
 
 }
 object Stream {
@@ -67,6 +69,15 @@ object StreamMain {
     println()
 
     println("take while < 3 (1-2-3 stream): " + stream123.takeWhile(_ < 3).toList)
+    println()
+
+    println("for all < 4 (1-2-3 stream): " + stream123.forAll(_ < 4))
+    println("for all < 2 (1-2-3 stream): " + stream123.forAll(_ < 2))
+    def lessThanWithSysout(a: Int, b: Int) = {
+      print(".")
+      a < b
+    }
+    println("for all < 2 (1-2-3 stream) + sysout: " + stream123.forAll(lessThanWithSysout(_, 2)))
     println()
   }
 
