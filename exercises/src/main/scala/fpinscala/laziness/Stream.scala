@@ -33,6 +33,11 @@ trait Stream[+A] {
     foldRight(true)((a, b) => p(a) && b)
   }
 
+  def takeWhileUsingFoldRight(p: A => Boolean): Stream[A] = {
+    foldRight(empty:Stream[A])((a, b) => if (p(a)) cons(a, b)
+                                         else empty)
+  }
+
 }
 object Stream {
   def empty[A]: Stream[A] = 
@@ -78,6 +83,10 @@ object StreamMain {
       a < b
     }
     println("for all < 2 (1-2-3 stream) + sysout: " + stream123.forAll(lessThanWithSysout(_, 2)))
+    println()
+
+    def stream1230 = Stream(1,2,3,0)
+    println("take while < 3 (1-2-3-0 stream) using foldRight: " + stream1230.takeWhileUsingFoldRight(_ < 3).toList)
     println()
   }
 
