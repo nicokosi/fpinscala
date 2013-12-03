@@ -38,6 +38,14 @@ trait Stream[+A] {
                                          else empty)
   }
 
+  def map[B](f: A => B): Stream[B] =
+    foldRight(empty:Stream[B])((a, b) => cons(f(a), b))
+
+  def filter(f: A => Boolean): Stream[A] =
+    foldRight(empty:Stream[A])((a, b) => if (f(a)) b
+                                         else cons(a, b)
+      )
+
 }
 object Stream {
   def empty[A]: Stream[A] = 
@@ -87,6 +95,12 @@ object StreamMain {
 
     def stream1230 = Stream(1,2,3,0)
     println("take while < 3 (1-2-3-0 stream) using foldRight: " + stream1230.takeWhileUsingFoldRight(_ < 3).toList)
+    println()
+
+    println("map +1 (1-2-3-0 stream): " + stream1230.map(_ + 1).toList)
+    println()
+
+    println("filter odd (1-2-3-0 stream): " + stream1230.filter(_ % 2 == 1).toList)
     println()
   }
 
