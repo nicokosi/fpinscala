@@ -44,7 +44,13 @@ trait Stream[+A] {
   def filter(f: A => Boolean): Stream[A] =
     foldRight(empty:Stream[A])((a, b) => if (f(a)) b
                                          else cons(a, b)
-      )
+    )
+
+  def append[B >: A](s: Stream[B]): Stream[B] =
+    foldRight(s)((a, b) => cons(a, b))
+
+  def flatMap[B >: A](f: A => Stream[B]): Stream[B] =
+    foldRight(empty:Stream[B])((a, b) => f(a).append(b))
 
 }
 object Stream {
@@ -102,6 +108,13 @@ object StreamMain {
 
     println("filter odd (1-2-3-0 stream): " + stream1230.filter(_ % 2 == 1).toList)
     println()
+
+    println("append 42-24 to 1-2-3-0 stream: " + stream1230.append(Stream(42,24)).toList)
+    println()
+
+    println("flatMap 'repeat' to 1-2-3 stream: " + stream123.flatMap(i => Stream(i,i)).toList)
+    println()
+
   }
 
 }
