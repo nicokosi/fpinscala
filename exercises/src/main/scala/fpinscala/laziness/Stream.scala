@@ -71,7 +71,8 @@ object Stream {
   def constant[A](a: A): Stream[A] =
     cons(a, constant(a))
 
-  def from(n: Int): Stream[Int] = sys.error("todo")
+  def from(n: Int): Stream[Int] =
+    cons(n, from(n + 1))
 
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = sys.error("todo")
 
@@ -116,6 +117,9 @@ object StreamMain {
     println()
 
     println("flatMap 'repeat' to 1-2-3 stream: " + stream123.flatMap(i => Stream(i,i)).toList)
+    println()
+
+    println("3 ints from 42: " + from(42).take(3).toList)
     println()
 
   }
