@@ -122,6 +122,14 @@ object StreamMain {
     println("3 ints from 42: " + from(42).take(3).toList)
     println()
 
+    def fibs() = {
+      def go(a: Int, b: Int) : Stream[Int] = 
+        cons(a, go(b, a + b))
+      go(0, 1)
+    }
+    println("10 first fibonacci numbers: " + fibs.take(10).toList)
+    println()
+
   }
 
 }
