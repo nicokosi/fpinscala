@@ -28,9 +28,17 @@ object RNG {
       (f(a), rng2)
     }
 
-  def positiveInt(rng: RNG): (Int, RNG) = sys.error("todo")
+  import scala.math.abs  
+  def positiveInt(rng: RNG): (Int, RNG) = rng.nextInt match {
+    case (Int.MinValue, next) => positiveInt(next)
+    case (i, next) => (abs(i), next)
+  }
 
-  def double(rng: RNG): (Double, RNG) = sys.error("todo")
+  def double(rng: RNG): (Double, RNG) = {
+    val (i, next) = positiveInt(rng)
+    val d = i / (Int.MaxValue.toDouble + 1)
+    (d, next)
+  }    
 
   def intDouble(rng: RNG): ((Int,Double), RNG) = sys.error("todo")
 
@@ -67,4 +75,19 @@ case class Machine(locked: Boolean, candies: Int, coins: Int)
 object State {
   type Rand[A] = State[RNG, A]
   def simulateMachine(inputs: List[Input]): State[Machine, Int] = sys.error("todo")
+}
+
+object StateMain {
+
+  import fpinscala.state.RNG._
+  def main(args: Array[String]): Unit = {
+    // ex1
+    val gen = simple(42)
+    println("positive int: " + positiveInt(gen))
+    println()
+    // ex2
+    println("double [0..1[: " + double(gen))
+    println()
+  }
+
 }
