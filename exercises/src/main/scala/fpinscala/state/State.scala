@@ -58,7 +58,17 @@ object RNG {
     ((d1, d2, d3), rng4)
   }
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = sys.error("todo")
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    def go(counter: Int, l: List[Int], rng: RNG) : (List[Int], RNG) = {
+      if (counter == 0) {
+        (l, rng)
+      } else {
+        val (i, rng2) = rng.nextInt
+        go(counter - 1, i :: l, rng2)
+      }      
+    }
+    go(count, List(), rng)
+  }
 
   def positiveMax(n: Int): Rand[Int] = sys.error("todo")
 
@@ -104,6 +114,9 @@ object StateMain {
     println("intDouble : " + intDouble(gen))
     println("doubleInt : " + doubleInt(gen))
     println("double3 : " + double3(gen))
+    println()
+    // ex4
+    println("10 random ints : " + ints(10)(gen))
     println()
   }
 
