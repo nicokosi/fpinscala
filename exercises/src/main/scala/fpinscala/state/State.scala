@@ -111,12 +111,17 @@ object StateMain {
     println("double [0..1[: " + double(gen))
     println()
     // ex3
-    println("intDouble : " + intDouble(gen))
-    println("doubleInt : " + doubleInt(gen))
-    println("double3 : " + double3(gen))
+    println("intDouble: " + intDouble(gen))
+    println("doubleInt: " + doubleInt(gen))
+    println("double3: " + double3(gen))
     println()
     // ex4
-    println("10 random ints : " + ints(10)(gen))
+    println("10 random ints: " + ints(10)(gen))
+    println()
+    // ex5
+    def doubleViaMap =
+      map(positiveInt)(i => i / (Int.MaxValue.toDouble + 1))
+    println("double [0..1[ via map: " + doubleViaMap(gen))
     println()
   }
 
