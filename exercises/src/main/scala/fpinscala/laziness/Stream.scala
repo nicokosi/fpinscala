@@ -74,7 +74,10 @@ object Stream {
   def from(n: Int): Stream[Int] =
     cons(n, from(n + 1))
 
-  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = sys.error("todo")
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = f(z) match {
+    case Some((v, s)) => cons(v, unfold(s)(f))
+    case None => empty
+  }
 
   def startsWith[A](s: Stream[A], s2: Stream[A]): Boolean = sys.error("todo")
 
@@ -128,6 +131,14 @@ object StreamMain {
       go(0, 1)
     }
     println("10 first fibonacci numbers: " + fibs.take(10).toList)
+    println()
+
+    println("5 first odd numbers via unfold: " + unfold(1)(s => Some((s, s + 2))).take(5).toList)
+    println()
+
+    def fibsViaUnfold =
+      unfold((0,1))(s => Some((s._1, (s._2, s._1 + s._2))))
+    println("10 first fibonacci numbers via unfold: " + fibsViaUnfold.take(10).toList)
     println()
 
   }
