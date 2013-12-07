@@ -72,7 +72,12 @@ object RNG {
 
   def positiveMax(n: Int): Rand[Int] = sys.error("todo")
 
-  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = sys.error("todo")
+  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] =
+    rng => {
+      val (a, rng2) = ra(rng)
+      val (b, rng3) = rb(rng2)
+      (f(a, b), rng3)
+    }
 
   def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = sys.error("todo")
 
@@ -106,23 +111,30 @@ object StateMain {
     // ex1
     val gen = simple(42)
     println("positive int: " + positiveInt(gen))
-    println()
+    println
     // ex2
     println("double [0..1[: " + double(gen))
-    println()
+    println
     // ex3
     println("intDouble: " + intDouble(gen))
     println("doubleInt: " + doubleInt(gen))
     println("double3: " + double3(gen))
-    println()
+    println
     // ex4
     println("10 random ints: " + ints(10)(gen))
-    println()
+    println
     // ex5
     def doubleViaMap =
       map(positiveInt)(i => i / (Int.MaxValue.toDouble + 1))
     println("double [0..1[ via map: " + doubleViaMap(gen))
-    println()
+    println
+    // ex6
+    def both[A,B](ra: Rand[A], rb: Rand[B]): Rand[(A,B)] =
+      map2(ra, rb)((_, _))
+    val randIntDouble: Rand[(Int, Double)] =
+      both(int, double)
+    println("randIntDouble: " + randIntDouble(gen))
+    println 
   }
 
 }
