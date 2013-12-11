@@ -20,7 +20,7 @@ object RNG {
   val int: Rand[Int] = _.nextInt
 
   def unit[A](a: A): Rand[A] =
-    rng => (a, rng)
+    rng => (a, rng) 
 
   def map[A,B](s: Rand[A])(f: A => B): Rand[B] =
     rng => {
@@ -81,7 +81,11 @@ object RNG {
 
   def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = sys.error("todo")
 
-  def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = sys.error("todo")
+  def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] =
+    rng => {
+      val (a, rng2) = f(rng)
+      g(a)(rng2)
+    }
 }
 
 case class State[S,+A](run: S => (A, S)) {
@@ -134,7 +138,15 @@ object StateMain {
     val randIntDouble: Rand[(Int, Double)] =
       both(int, double)
     println("randIntDouble: " + randIntDouble(gen))
-    println 
+    println
+    // ex8
+    def positiveLessThan(n: Int): Rand[Int] =
+      flatMap(positiveInt) { i =>
+        val mod = i % n
+        if (i + (n-1) - mod > 0) unit(mod)
+        else positiveLessThan(n)
+      }
+    println("positiveLessThan 42: " + positiveLessThan(42)(gen))
   }
 
 }
