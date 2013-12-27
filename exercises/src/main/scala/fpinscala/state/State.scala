@@ -147,6 +147,12 @@ object StateMain {
         else positiveLessThan(n)
       }
     println("positiveLessThan 42: " + positiveLessThan(42)(gen))
+    // ex 9
+    def mapViaFlatMap[A,B](s: Rand[A])(f: A => B): Rand[B] =
+      flatMap(s) { i => unit(f(i)) }
+    def doubleViaMapViaFlatMap =
+      mapViaFlatMap(positiveInt)(i => i / (Int.MaxValue.toDouble + 1))
+    println("doubleViaMapViaFlatMap : " + doubleViaMapViaFlatMap(gen))
   }
 
 }
